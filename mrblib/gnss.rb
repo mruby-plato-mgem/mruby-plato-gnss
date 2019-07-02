@@ -185,6 +185,7 @@ module Plato
     end
 
     def latitude
+      return nil if @gnss[:ns].empty?
       if lat = @gnss[:lat_raw]
         lat = degree(lat)
         lat = -lat if @gnss[:ns] == 'S'
@@ -193,6 +194,7 @@ module Plato
     end
 
     def longitude
+      return nil if @gnss[:ew].empty?
       if lng = @gnss[:lng_raw]
         lng = degree(lng)
         lng = -lng if @gnss[:ew] == 'W'
