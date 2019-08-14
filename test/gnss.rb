@@ -247,3 +247,8 @@ assert('Plato::GNSS', 'vtg') do
   assert_float(0.0, vtg.gsk)
   assert_float(0.0, vtg.gskph)
 end
+
+assert('Plato::GNSS', 'distance') do
+  assert_float(879987.99, Plato::GNSS.distance(33.606316, 130.418108, 35.689608, 139.692080).round(2))  # Fukuoka-Tokyo
+  assert_float(1418499.80, Plato::GNSS.distance(33.606316, 130.418108, 43.064301, 141.346869).round(2)) # Fuluoka-Sapporo
+end

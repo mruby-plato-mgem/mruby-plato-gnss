@@ -5,6 +5,8 @@ module Plato
   module GNSS
     attr_reader :gnss
 
+    EARTH_R = 6378137.0   # Equatorial radius
+
     SUPPORTED_TYPES = [:GGA, :GSA, :GSV, :RMC, :VTG, :ZDA]
 
     # NMEA formats
@@ -311,5 +313,41 @@ module Plato
   # puts "parse_zda: #{v.inspect}"
       v
     end
+
+    # module functions
+
+    # deg2rad(deg) #=> Float
+    # convert degrees to radians
+    # <params>
+    #   deg:  degrees
+    # <return>
+    #   radians
+    def deg2rad(deg)
+      deg.to_f * Math::PI / 180.0
+    end
+    module_function :deg2rad
+
+    # GNSS.distance(lat1, lng1, lat2, lng2) => Float
+    # Calculate distance between 2 points
+    # <params>
+    #   lat1: Latitude #1
+    #   lng1: Longitude #1
+    #   lat2: Latitude #2
+    #   lng2: Longitude #2
+    # <return>
+    #   distance between 2 points.
+    def distance(lat1, lng1, lat2, lng2)
+      lat1 = deg2rad(lat1)
+      lng1 = deg2rad(lng1)
+      lat2 = deg2rad(lat2)
+      lng2 = deg2rad(lng2)
+
+      lat_avr = (lat1 - lat2) / 2.0
+      lng_avr = (lng1 - lng2) / 2.0
+
+      EARTH_R * 2.0 * Math.asin(Math.sqrt(Math.sin(lat_avr) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(lng_avr) ** 2))
+    end
+    module_function :distance
+
   end
 end
